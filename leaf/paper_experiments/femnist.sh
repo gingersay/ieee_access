@@ -194,7 +194,7 @@ for val_pair in "${gossip_vals[@]}"; do
 #	echo "Running gossip experiment with ${num_epochs} local epochs, ${segment} segments, ${replica} replica, ${e} e. "
 #	run_gossip  "${num_epochs}" "${segment}" "${replica}" "${e}" &
 done
-wait
+
 
 # Run combo experiments
 for val_pair in "${combo_vals[@]}"; do
@@ -207,7 +207,7 @@ for val_pair in "${combo_vals[@]}"; do
 #	run_combo  "${num_epochs}" "${segment}" "${replica}" "${e}"&
    combo $val_pair
 done
-wait
+
 
 # Run BAcombo experiments
 for val_pair in "${BAcombo_vals[@]}"; do
@@ -220,7 +220,7 @@ for val_pair in "${BAcombo_vals[@]}"; do
 #	run_combo  "${num_epochs}" "${segment}" "${replica}" "${e}"&
     BAcombo $val_pair
 done
-wait
+
 
 popd
 
