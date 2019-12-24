@@ -69,8 +69,8 @@ function run_gossip() {
 	e="$4"
 
 	pushd models/
-#		python main.py -dataset 'femnist' -model 'cnn' --num-rounds ${num_rounds} --clients-per-round ${clients_per_round} --num-epochs ${num_epochs} -lr ${fedavg_lr}
-		python main.py -dataset 'femnist' -model 'cnn' -algorithm gossip --num-rounds ${num_rounds} --num-epochs ${num_epochs} -lr ${fedavg_lr} --segment ${segment} --replica ${replica} --eval-every 1 -e ${e}
+#		python3 main.py -dataset 'femnist' -model 'cnn' --num-rounds ${num_rounds} --clients-per-round ${clients_per_round} --num-epochs ${num_epochs} -lr ${fedavg_lr}
+		python3 main.py -dataset 'femnist' -model 'cnn' -algorithm gossip --num-rounds ${num_rounds} --num-epochs ${num_epochs} -lr ${fedavg_lr} --segment ${segment} --replica ${replica} --eval-every 1 -e ${e}
 
 	popd
 	move_data ${output_dir} "gossip_s_${segment}_r_${replica}_epoch_${num_epochs}_e_${e}"
@@ -83,8 +83,8 @@ function run_combo() {
 	e="$4"
 
 	pushd models/
-#		python main.py -dataset 'femnist' -model 'cnn' --num-rounds ${num_rounds} --clients-per-round ${clients_per_round} --num-epochs ${num_epochs} -lr ${fedavg_lr}
-		python main.py -dataset 'femnist' -model 'cnn' -algorithm combo --num-rounds ${num_rounds} --num-epochs ${num_epochs} -lr ${fedavg_lr} --segment ${segment} --replica ${replica} --eval-every 1 -e ${e}
+#		python3 main.py -dataset 'femnist' -model 'cnn' --num-rounds ${num_rounds} --clients-per-round ${clients_per_round} --num-epochs ${num_epochs} -lr ${fedavg_lr}
+		python3 main.py -dataset 'femnist' -model 'cnn' -algorithm combo --num-rounds ${num_rounds} --num-epochs ${num_epochs} -lr ${fedavg_lr} --segment ${segment} --replica ${replica} --eval-every 1 -e ${e}
 
 	popd
 	move_data ${output_dir} "run_combo_s_${segment}_r_${replica}_epoch_${num_epochs}_e_${e}"
@@ -97,8 +97,8 @@ function run_bacombo() {
 	e="$4"
 
 	pushd models/
-#		python main.py -dataset 'femnist' -model 'cnn' --num-rounds ${num_rounds} --clients-per-round ${clients_per_round} --num-epochs ${num_epochs} -lr ${fedavg_lr}
-		python main.py -dataset 'femnist' -model 'cnn' -algorithm BAcombo --num-rounds ${num_rounds} --num-epochs ${num_epochs} -lr ${fedavg_lr} --segment ${segment} --replica ${replica} --eval-every 1 -e ${e}
+#		python3 main.py -dataset 'femnist' -model 'cnn' --num-rounds ${num_rounds} --clients-per-round ${clients_per_round} --num-epochs ${num_epochs} -lr ${fedavg_lr}
+		python3 main.py -dataset 'femnist' -model 'cnn' -algorithm BAcombo --num-rounds ${num_rounds} --num-epochs ${num_epochs} -lr ${fedavg_lr} --segment ${segment} --replica ${replica} --eval-every 1 -e ${e}
 
 	popd
 	move_data ${output_dir} "run_combo_s_${segment}_r_${replica}_epoch_${num_epochs}_e_${e}"
@@ -141,7 +141,7 @@ function BAcombo() {
 #	minibatch_percentage="$2"
 #
 #	pushd models/
-#		python main.py -dataset 'femnist' -model 'cnn' --minibatch ${minibatch_percentage} --num-rounds ${num_rounds} --clients-per-round ${clients_per_round} -lr ${minibatch_lr}
+#		python3 main.py -dataset 'femnist' -model 'cnn' --minibatch ${minibatch_percentage} --num-rounds ${num_rounds} --clients-per-round ${clients_per_round} -lr ${minibatch_lr}
 #	popd
 #	move_data ${output_dir} "minibatch_c_${clients_per_round}_mb_${minibatch_percentage}"
 #}
@@ -155,7 +155,8 @@ if [ ! -d 'data/' -o ! -d 'models/' ]; then
 	echo "Couldn't find data/ and/or models/ directories - please run this script from the root of the LEAF repo"
 fi
 
-# If data unavailable, execute pre-processing script
+# If data unavailable, execute pre-processing script  sss
+
 if [ ! -d 'data/femnist/data/train' ]; then
 	if [ ! -f 'data/femnist/preprocess.sh' ]; then
 		echo "Couldn't find data/ and/or models/ directories - please obtain scripts from GitHub repo: https://github.com/TalwalkarLab/leaf"
