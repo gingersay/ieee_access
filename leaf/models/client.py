@@ -37,6 +37,7 @@ class Client:
         self.model1 = model.get_params()
         self.train_time = []
         self.transfer_time = []
+        self.updates_flat = []
 
         self.exit_bw = simpy.Container(env, init=CAPACITY, capacity=CAPACITY)
         self.record_time = [env.now]
@@ -83,11 +84,20 @@ class Client:
             num_epochs = 1
             comp, update = self.model.train(data, num_epochs, num_data)
         num_train_samples = len(data['y'])
+        self.updates_flat = self.flat_updates(update)
         self.updates.append((num_train_samples, update))
         server.updates.append((num_train_samples, update))
         end_time = datetime.now()
         self.training_time = (end_time-start_time).seconds
         return comp, num_train_samples, update
+
+    def flat_updates(self,model_weights):
+        self.shape_list = []
+        flat_m = model_weights
+        for x in model_weights:
+            self.shape_list.append(x.shape)
+            flat_m.extend(list(x.flatten()))
+        return flat_m
 
     def update_model(self, replica, segment, server):
         print('-----update[%s]------'%self.idx)
@@ -95,6 +105,8 @@ class Client:
         for p in range(segment):
             target = self.choose_best_segment(e, replica)
             segment_weight = self.get_segments(server.updates[self.idx][1], p, segment)
+            # segment_weight = self.get_segments(self.updates_flat, p, segment)
+
             print('segment:',p)
             for k in range(replica):
                 segment_weight += self.get_segments(server.updates[target[k]][1], p, segment)
@@ -167,13 +179,13 @@ class Client:
             #     target.append(a)
         return target
 
-    def get_segments(self, model_weights, seg, segment):
-        flat_m = []
-        self.shape_list = []
-        print('the len of weights', len(model_weights))
-        for x in model_weights:
-            self.shape_list.append(x.shape)
-            flat_m.extend(list(x.flatten()))
+    def get_segments(self, flat_m, seg, segment):
+        # flat_m = []
+        # self.shape_list = []
+        # print('the len of weights', len(model_weights))
+        # for x in model_weights:
+        #     self.shape_list.append(x.shape)
+        #     flat_m.extend(list(x.flatten()))
         seg_length = len(flat_m) // segment + 1
 
         return flat_m[seg*seg_length:(seg+1)*seg_length]
